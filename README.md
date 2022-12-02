@@ -1,5 +1,5 @@
 <p align="center">
-	<img width="300" src="https://tari.com/assets/img/tari-logo.svg">
+  <img width="300" src="https://www.tari.com/assets/img/tari-aurora-logo.svg">
 </p>
 
 [![Build Status](https://travis-ci.com/tari-project/wallet-ios.svg?branch=development)](https://travis-ci.com/tari-project/wallet-ios)
@@ -21,6 +21,7 @@ Code follows [Github's](https://github.com/github/swift-style-guide) style guide
 
 ```bash
 git clone git@github.com:tari-project/wallet-ios.git
+cd wallet-ios
 sh update_dependencies.sh
 ```
 
@@ -28,22 +29,37 @@ This will also create a default `env.json` file for sensitive vars. Adjust these
 
 ### Dependencies
 
-Third party frameworks and Library are managed using a pre-compiled [Tari](https://github.com/tari-project/tari) binary from https://www.tari.com/downloads/ as well as packages from Cocoapods and Carthage.
+Third party frameworks and Library are managed using a pre-compiled [Tari](https://github.com/tari-project/tari)
+binary from https://www.tari.com/downloads/ as well as packages from Cocoapods, plus jq for scripts.
 
-### Pods used 
+Cocoapods can either be installed directly
+```bash
+sudo gem install cocoapods
+```
+or via brew
+```bash
+brew install cocoapods jq fastlane
+```
+
+### Pods used (Cocoapods)
 
 ```ruby
 - pod 'SwiftLint'
-- pod 'FloatingPanel'
+- pod 'Tor', '~> 407.11'
+- pod 'FloatingPanel', '1.7.5'
 - pod 'lottie-ios'
 - pod 'SwiftEntryKit', '1.2.3'
 - pod 'ReachabilitySwift'
+- pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.27.1'
+- pod 'SwiftKeychainWrapper', '3.4.0'
+- pod 'Giphy', '2.1.22'
+- pod 'IPtProxy', '1.8.0'
+- pod 'OpenSSL-Universal'
+- pod 'Zip', '2.1.2'
+- pod 'SwiftyDropbox', '8.2.1'
+- pod 'YatLib', '0.3.2'
+- pod 'TariCommon', '0.2.0'
 ```
-
-### Carthage packages used used 
-
-    - binary "https://icepa.github.io/Tor.framework/Tor.json" == 400.6.3
-
 
 ### Version Management
 
@@ -62,3 +78,13 @@ Coming soon.
 ### UI testing
 
 Right now we don't have UI tests using asserts but running `generate_screenshots.sh` will automatically generate a report containing screenshots of each view on multiple simulators. This report can be used to visually inspect each PR for any possible UI or layout bugs that might have been introduced.
+
+### Local Build
+
+```bash
+pod install
+xcodebuild build -workspace MobileWallet.xcworkspace -scheme MobileWallet \
+  -destination 'platform=iOS Simulator,OS=16.1,name=iPhone 14' \
+  CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO \
+  ONLY_ACTIVE_ARCH=No
+```
